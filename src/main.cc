@@ -1,3 +1,5 @@
+#include <boost/program_options/option.hpp>
+
 #include "FileSystemCrawler.h"
 
 int main(int argc, char **argv)
