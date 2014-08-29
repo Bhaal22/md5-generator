@@ -7,7 +7,7 @@ int main(int argc, char **argv)
 
 	std::list<std::string> dirs;
 
-	//dirs.push_front("D:\\dev\\monitor\\10.9.dev\\TEST_MONITOR\\Bin_Release");
+	dirs.push_front("D:\\dev\\monitor\\10.9.dev\\TEST_MONITOR\\Bin_Release");
 
 	crawler.crawl(dirs);
 
