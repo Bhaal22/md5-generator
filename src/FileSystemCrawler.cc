@@ -91,15 +91,13 @@ public:
 			}
 
 		});
-		/*std::for_each(itr, end_itr,
-					  md5(level));*/
 	}
 };
 
-std::list<std::string> FileSystemCrawler::crawl(const std::list<std::string> &dirs)
+std::vector<std::string> FileSystemCrawler::crawl(const std::vector<std::string> &dirs)
 {
 	std::for_each(dirs.begin(), dirs.end(),
 				  list_files(""));
 
-	return std::list<std::string>();
+	return std::vector<std::string>();
 }

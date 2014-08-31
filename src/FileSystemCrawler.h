@@ -1,8 +1,6 @@
 #ifndef __FILE_SYSTEM_CRAWLER_H
 #define __FILE_SYSTEM_CRAWLER_H
 
-#include <list>
-
 class FileSystemCrawler
 {
 public:
@@ -12,7 +10,7 @@ public:
 	~FileSystemCrawler()
 	{ }
 
-	std::list<std::string> crawl(const std::list<std::string> &dirs);
+	std::vector<std::string> crawl(const std::vector<std::string> &dirs);
 };
 
 #endif
