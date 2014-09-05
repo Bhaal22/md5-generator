@@ -16,7 +16,7 @@ public:
   std::vector<std::string> crawl(const std::vector<std::string> &dirs)
   {
     std::for_each(dirs.begin(), dirs.end(),
-      list_files<_Action>(""));
+      list_files<_Action>(0));
     return std::vector<std::string>();
   }
 };

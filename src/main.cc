@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "Actions/TraceAction.h"
+#include "Actions/FileAction.h"
 #include "FileSystemCrawler.h"
 
 namespace po = boost::program_options;
@@ -38,7 +39,7 @@ int main(int argc, char **argv)
   }
 
 
-	FileSystemCrawler<TraceAction> crawler;
+	FileSystemCrawler<FileAction> crawler;
 	crawler.crawl(dirs);
 
 

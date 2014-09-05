@@ -59,9 +59,9 @@ template <typename _Action>
 struct list_files
 {
 private:
-  std::string level;
+  int level;
 public:
-  list_files(std::string level)
+  list_files(int level)
     : level(level)
   { }
 
@@ -72,7 +72,7 @@ public:
     sys::directory_iterator end_itr;
     sys::directory_iterator itr(directory);
 
-    std::string l(level);
+    int l = level;
     std::for_each(itr, end_itr,
       [&l, &action](sys::path path) {
 
@@ -80,18 +80,15 @@ public:
       {
         action.do_directory(path);
 
-        list_files ls(l + " ");
+        list_files ls(l + 1);
         ls(path.directory_string());
       }
       else
       {
         md5 _md5;
 
-        //std::string name(path.leaf());
         std::string full_path(path.file_string());
-
-        //std::cout << l << name << " " << _md5(full_path) << std::endl;
-        action.do_file(l, path, _md5(full_path));
+        action.do_file(path, _md5(full_path));
       }
 
     });
