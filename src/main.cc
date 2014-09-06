@@ -30,7 +30,8 @@ int main(int argc, char **argv)
   description.add_options()
     ("help", "show help")
     ("help-generator,h", po::value<std::string>(), "Help for generators. Possible values = [file, trace]")
-    ("dir,d", po::value< std::vector<std::string> >(), "directories to compute hash")
+    ("dir,d", po::value< std::vector<std::string>>(), "directories to compute hash")
+    ("file_pattern,p", po::value<std::string>()->default_value(".*"), "Pattern on which performing checksum")
     ("generator,g", po::value<std::string>(), "name of the generator. Posible values = [file, trace]")
     ("level", po::value<int>(), "Recursive level");
 
@@ -52,6 +53,7 @@ int main(int argc, char **argv)
   {
     level = vm["level"].as<int>();
   }
+
 
   std::vector<std::string> dirs;
   if (vm.count("dir"))

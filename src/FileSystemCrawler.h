@@ -18,11 +18,8 @@ public:
 
   std::vector<std::string> crawl(const std::vector<std::string> &dirs)
   {
-    /*std::for_each(dirs.begin(), dirs.end(),
-                  std::bind(list_files<_Action>(0), _action, std::placeholders::_2));*/
-
     std::for_each(dirs.begin(), dirs.end(),
-                  list_files<_Action>(_action, 0));
+                  list_files<_Action>(_action, ".*\\.dll", 0));
     return std::vector<std::string>();
   }
 };

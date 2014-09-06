@@ -5,6 +5,8 @@
 #include <filesystem>
 #include <algorithm>
 #include <fstream>
+#include <regex>
+
 
 #include <hex.h>
 #include <md5.h>
@@ -60,13 +62,14 @@ struct list_files
 {
 private:
   _Action *_action;
+  std::string _pattern;
   int level;
 
 public:
   typedef void result_type;
 
-  list_files(_Action &action, int level)
-    : _action(&action), level(level)
+  list_files(_Action &action, const std::string &pattern, int level)
+    : _action(&action), _pattern(pattern), level(level)
   { }
 
   void _do(const std::string &directory)
@@ -78,13 +81,13 @@ public:
     _Action &action = *_action;
 
     std::for_each(itr, end_itr,
-      [&l, &action](sys::path path) {
+      [&l, &action, this](sys::path path) {
 
       if (sys::is_directory(path))
       {
         action.do_directory(path);
 
-        list_files<_Action> ls(action, l + 1);
+        list_files<_Action> ls(action, _pattern, l + 1);
         ls._do(path.directory_string());
       }
       else
@@ -92,7 +95,12 @@ public:
         md5 _md5;
 
         std::string full_path(path.file_string());
-        action.do_file(path, _md5(full_path));
+        
+        std::tr1::regex rx(_pattern);
+        if (std::tr1::regex_match(full_path.begin(), full_path.end(), rx))
+        {
+          action.do_file(path, _md5(full_path));
+        }
       }
 
     });
