@@ -5,7 +5,10 @@
 #include <filesystem>
 #include <iostream>
 
+#include <boost/filesystem.hpp>
+
 namespace sys = std::tr2::sys;
+namespace po = boost::program_options;
 
 struct TraceAction
 {
@@ -24,6 +27,19 @@ public:
     std::string full_path(path.file_string());
 
     std::cout << tabs << name << " " << md5 << std::endl;
+  }
+
+  po::options_description options()
+  {
+    po::options_description config("Configuration Trace");
+    config.add_options()
+      ("optimization", po::value<int>()->default_value(10),
+      "optimization level")
+      ("include-path,I",
+      po::value< std::vector<std::string> >()->composing(),
+      "include path");
+
+    return config;
   }
 };
 

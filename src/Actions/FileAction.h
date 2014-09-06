@@ -4,6 +4,10 @@
 #include <fstream>
 #include <map>
 
+#include <boost/filesystem.hpp>
+
+namespace po = boost::program_options;
+
 struct FileAction
 {
 private:
@@ -55,6 +59,20 @@ public:
     std::string full_path(path.file_string());
 
     _files[full_path] = md5;
+  }
+
+  po::options_description options()
+  {
+    po::options_description config("Configuration");
+    config.add_options()
+      ("optimization", po::value<int>()->default_value(10),
+      "optimization level")
+      ("include-path,I",
+      po::value< std::vector<std::string> >()->composing(),
+      "include path");
+
+
+    return config;
   }
 };
 

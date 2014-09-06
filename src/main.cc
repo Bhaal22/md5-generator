@@ -13,7 +13,17 @@ int main(int argc, char **argv)
   description.add_options()
     ("help", "show help")
     ("dir,d", po::value< std::vector<std::string> >(), "directories to compute hash")
+    ("generator,g", "name of the generator. Posible values = [file, trace]")
     ("level", "recursive level");
+
+
+  FileAction fAction;
+  po::options_description file_options = fAction.options();
+
+  FileAction tAction;
+  po::options_description trace_options = tAction.options();
+
+  description.add(file_options).add(trace_options);
 
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, description), vm);
