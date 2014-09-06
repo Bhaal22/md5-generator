@@ -63,13 +63,10 @@ public:
 
   po::options_description options()
   {
-    po::options_description config("Configuration");
+    po::options_description config("File Generator");
     config.add_options()
-      ("optimization", po::value<int>()->default_value(10),
-      "optimization level")
-      ("include-path,I",
-      po::value< std::vector<std::string> >()->composing(),
-      "include path");
+      ("help", "Help")
+      ("output_file,o", po::value<std::string>(), "Output File");
 
 
     return config;

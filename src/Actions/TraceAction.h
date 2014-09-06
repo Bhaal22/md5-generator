@@ -31,14 +31,7 @@ public:
 
   po::options_description options()
   {
-    po::options_description config("Configuration Trace");
-    config.add_options()
-      ("optimization", po::value<int>()->default_value(10),
-      "optimization level")
-      ("include-path,I",
-      po::value< std::vector<std::string> >()->composing(),
-      "include path");
-
+    po::options_description config("Trace Generator");
     return config;
   }
 };

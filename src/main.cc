@@ -12,26 +12,32 @@ int main(int argc, char **argv)
   po::options_description description("Hash Generator usage");
   description.add_options()
     ("help", "show help")
+    ("help-generator,h", po::value<std::string>(), "Help for generators. Possible values = [file, trace]")
     ("dir,d", po::value< std::vector<std::string> >(), "directories to compute hash")
-    ("generator,g", "name of the generator. Posible values = [file, trace]")
-    ("level", "recursive level");
+    ("generator,g", po::value<std::string>(), "name of the generator. Posible values = [file, trace]")
+    ("level", po::value<int>(), "Recursive level");
 
 
-  FileAction fAction;
+  /*FileAction fAction;
   po::options_description file_options = fAction.options();
 
-  FileAction tAction;
-  po::options_description trace_options = tAction.options();
+  TraceAction tAction;
+  po::options_description trace_options = tAction.options();*/
 
-  description.add(file_options).add(trace_options);
+  //description.add(file_options).add(trace_options);
 
   po::variables_map vm;
-  po::store(po::parse_command_line(argc, argv, description), vm);
+  //po::store(po::parse_command_line(argc, argv, description), vm);
+
+  po::parsed_options parsed =
+    po::command_line_parser(argc, argv).options(description).allow_unregistered().run();
+
+  po::store(parsed, vm);
   po::notify(vm);
 
   if (vm.count("help")) {
     std::cout << description << std::endl;
-    return 1;
+    return 0;
   }
 
   int level = -1;
@@ -40,7 +46,28 @@ int main(int argc, char **argv)
     level = vm["level"].as<int>();
   }
 
-  
+  std::string generator;
+  if (vm.count("generator"))
+  {
+    generator = vm["generator"].as<std::string>();
+
+    if (generator == "file")
+    {
+      FileAction action;
+      description.add(action.options());
+
+      po::variables_map vm2;
+      po::store(po::parse_command_line(argc, argv, description), vm2);
+      po::notify(vm2);
+
+      if (vm2.count("output_file"))
+      {
+        std::string out_file = vm2["output_file"].as<std::string>();
+        std::cout << out_file << std::endl;
+      }
+
+    }
+  }
 
   std::vector<std::string> dirs;
   if (vm.count("dir"))
