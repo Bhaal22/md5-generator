@@ -22,7 +22,7 @@ public:
                   std::bind(list_files<_Action>(0), _action, std::placeholders::_2));*/
 
     std::for_each(dirs.begin(), dirs.end(),
-                  list_files<_Action>(0));
+                  list_files<_Action>(_action, 0));
     return std::vector<std::string>();
   }
 };

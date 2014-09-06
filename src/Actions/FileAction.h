@@ -24,10 +24,13 @@ public:
       ("help", "Help")
       ("output_file,o", po::value<std::string>(), "Output File");
 
-
     po::variables_map vm;
-    po::store(po::parse_command_line(argc, argv, parameters), vm);
+    po::parsed_options parsed =
+      po::command_line_parser(argc, argv).options(parameters).allow_unregistered().run();
+
+    po::store(parsed, vm);
     po::notify(vm);
+
 
     if (vm.count("output_file"))
     {
@@ -38,7 +41,7 @@ public:
 
   ~FileAction()
   {
-    std::ofstream out_file("md5.out", std::ios::out);
+    std::ofstream out_file(output_file, std::ios::out);
 
     out_file << "//----- Directories -----\\\\" << std::endl;
     std::for_each(_directories.begin(), _directories.end(),

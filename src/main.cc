@@ -7,6 +7,23 @@
 
 namespace po = boost::program_options;
 
+class MyCLass {
+  int *pInt;
+public:
+  MyCLass() {
+    pInt = new int;
+    *pInt = 42;
+  }
+  ~MyCLass() {
+    delete pInt;
+    printf("Goodbye cruel world!");
+  }
+  void func1() {
+    printf("Hello World %d", *pInt);
+  }
+};
+
+
 int main(int argc, char **argv)
 {
   po::options_description description("Hash Generator usage");
@@ -17,17 +34,7 @@ int main(int argc, char **argv)
     ("generator,g", po::value<std::string>(), "name of the generator. Posible values = [file, trace]")
     ("level", po::value<int>(), "Recursive level");
 
-
-  /*FileAction fAction;
-  po::options_description file_options = fAction.options();
-
-  TraceAction tAction;
-  po::options_description trace_options = tAction.options();*/
-
-  //description.add(file_options).add(trace_options);
-
   po::variables_map vm;
-  //po::store(po::parse_command_line(argc, argv, description), vm);
 
   po::parsed_options parsed =
     po::command_line_parser(argc, argv).options(description).allow_unregistered().run();
@@ -50,6 +57,9 @@ int main(int argc, char **argv)
   if (vm.count("dir"))
   {
     dirs = vm["dir"].as< std::vector< std::string> >();
+
+    if (dirs.size() == 0)
+      return 0;
   }
 
 

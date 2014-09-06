@@ -59,21 +59,24 @@ template <typename _Action>
 struct list_files
 {
 private:
+  _Action *_action;
   int level;
+
 public:
   typedef void result_type;
 
-  list_files(int level)
-    : level(level)
+  list_files(_Action &action, int level)
+    : _action(&action), level(level)
   { }
 
   void operator () (const std::string &directory)
   {
-    _Action action(0, nullptr);
     sys::directory_iterator end_itr;
     sys::directory_iterator itr(directory);
 
     int l = level;
+    _Action &action = *_action;
+
     std::for_each(itr, end_itr,
       [&l, &action](sys::path path) {
 
@@ -81,7 +84,7 @@ public:
       {
         action.do_directory(path);
 
-        list_files ls(l + 1);
+        list_files<_Action> ls(action, l + 1);
         ls(path.directory_string());
       }
       else
