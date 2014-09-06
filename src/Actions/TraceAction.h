@@ -13,8 +13,15 @@ namespace po = boost::program_options;
 struct TraceAction
 {
 private:
+  po::options_description parameters;
   std::string tabs;
 public:
+  TraceAction(int argc, char **argv)
+    : parameters("Trace Generator")
+  {
+
+  }
+
   void do_directory(const sys::path &path)
   {
     tabs += " ";
@@ -29,10 +36,9 @@ public:
     std::cout << tabs << name << " " << md5 << std::endl;
   }
 
-  po::options_description options()
+  const po::options_description& options()
   {
-    po::options_description config("Trace Generator");
-    return config;
+    return parameters;
   }
 };
 

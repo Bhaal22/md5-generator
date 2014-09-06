@@ -61,14 +61,15 @@ struct list_files
 private:
   int level;
 public:
+  typedef void result_type;
+
   list_files(int level)
     : level(level)
   { }
 
   void operator () (const std::string &directory)
   {
-    _Action action;
-
+    _Action action(0, nullptr);
     sys::directory_iterator end_itr;
     sys::directory_iterator itr(directory);
 

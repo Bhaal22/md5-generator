@@ -46,29 +46,6 @@ int main(int argc, char **argv)
     level = vm["level"].as<int>();
   }
 
-  std::string generator;
-  if (vm.count("generator"))
-  {
-    generator = vm["generator"].as<std::string>();
-
-    if (generator == "file")
-    {
-      FileAction action;
-      description.add(action.options());
-
-      po::variables_map vm2;
-      po::store(po::parse_command_line(argc, argv, description), vm2);
-      po::notify(vm2);
-
-      if (vm2.count("output_file"))
-      {
-        std::string out_file = vm2["output_file"].as<std::string>();
-        std::cout << out_file << std::endl;
-      }
-
-    }
-  }
-
   std::vector<std::string> dirs;
   if (vm.count("dir"))
   {
@@ -76,9 +53,22 @@ int main(int argc, char **argv)
   }
 
 
-	FileSystemCrawler<FileAction> crawler;
-	crawler.crawl(dirs);
+  std::string generator;
+  if (vm.count("generator"))
+  {
+    generator = vm["generator"].as<std::string>();
 
+    if (generator == "file")
+    {
+      FileSystemCrawler<FileAction> crawler(argc, argv);
+      crawler.crawl(dirs);
+    }
+    else if (generator == "trace")
+    {
+      FileSystemCrawler<TraceAction> crawler(argc, argv);
+      crawler.crawl(dirs);
+    }
+  }
 
 	return 0;
 }

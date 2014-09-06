@@ -11,10 +11,31 @@ namespace po = boost::program_options;
 struct FileAction
 {
 private:
+  po::options_description parameters;
   std::map<std::string, std::string> _files;
   std::vector<std::string> _directories;
 
+  std::string output_file;
 public:
+  FileAction(int argc, char **argv)
+    : parameters("File Generator")
+  {
+    parameters.add_options()
+      ("help", "Help")
+      ("output_file,o", po::value<std::string>(), "Output File");
+
+
+    po::variables_map vm;
+    po::store(po::parse_command_line(argc, argv, parameters), vm);
+    po::notify(vm);
+
+    if (vm.count("output_file"))
+    {
+      output_file = vm["output_file"].as<std::string>();
+    }
+
+  }
+
   ~FileAction()
   {
     std::ofstream out_file("md5.out", std::ios::out);
@@ -61,15 +82,9 @@ public:
     _files[full_path] = md5;
   }
 
-  po::options_description options()
+  const po::options_description& options()
   {
-    po::options_description config("File Generator");
-    config.add_options()
-      ("help", "Help")
-      ("output_file,o", po::value<std::string>(), "Output File");
-
-
-    return config;
+    return parameters;
   }
 };
 
