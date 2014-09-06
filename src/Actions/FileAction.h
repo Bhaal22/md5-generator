@@ -102,10 +102,13 @@ public:
 
     std::map<std::string, std::string> &map_files = _files;
     std::sort(keys.begin(), keys.end());
+
+    sys::path _root(root);
     std::for_each(keys.begin(), keys.end(),
-      [&out_file, &map_files](const std::string& name) 
+      [&out_file, &map_files, &_root, this](const std::string& name) 
       {
-        out_file << map_files[name] << " *" << name << std::endl;
+        sys::path p = relativePath(sys::path(name), _root);
+        out_file << map_files[name] << " *" << _root.filename() + "/" + p.file_string() << std::endl;
       });
 
 
