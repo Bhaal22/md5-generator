@@ -69,7 +69,7 @@ public:
     : _action(&action), level(level)
   { }
 
-  void operator () (const std::string &directory)
+  void _do(const std::string &directory)
   {
     sys::directory_iterator end_itr;
     sys::directory_iterator itr(directory);
@@ -85,7 +85,7 @@ public:
         action.do_directory(path);
 
         list_files<_Action> ls(action, l + 1);
-        ls(path.directory_string());
+        ls._do(path.directory_string());
       }
       else
       {
@@ -96,6 +96,12 @@ public:
       }
 
     });
+  }
+
+  void operator () (const std::string &directory)
+  {
+    _action->set_root(directory);
+    _do(directory);
   }
 };
 

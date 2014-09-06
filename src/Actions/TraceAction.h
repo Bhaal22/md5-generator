@@ -22,6 +22,11 @@ public:
 
   }
 
+  void set_root(const std::string &root)
+  {
+
+  }
+
   void do_directory(const sys::path &path)
   {
     tabs += " ";
