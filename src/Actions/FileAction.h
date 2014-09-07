@@ -8,11 +8,25 @@
 
 namespace po = boost::program_options;
 
+struct file
+{
+  std::string root;
+  std::string md5;
+
+  file()
+    : root(""), md5("")
+  { }
+
+  file(const std::string &root, const std::string &md5)
+    : root(root), md5(md5)
+  { }
+};
+
 struct FileAction
 {
 private:
   po::options_description parameters;
-  std::map<std::string, std::string> _files;
+  std::map<std::string, file> _files;
   std::vector<std::string> _directories;
 
   std::string root;
@@ -95,20 +109,21 @@ public:
     std::vector<std::string> keys(_files.size());
 
     std::transform(_files.begin(), _files.end(), keys.begin(),
-        [](std::pair<std::string, std::string> p) {
+        [](std::pair<std::string, file> p) {
       return p.first;
     });
 
 
-    std::map<std::string, std::string> &map_files = _files;
+    std::map<std::string, file> &map_files = _files;
     std::sort(keys.begin(), keys.end());
 
-    sys::path _root(root);
     std::for_each(keys.begin(), keys.end(),
-      [&out_file, &map_files, &_root, this](const std::string& name) 
+      [&out_file, &map_files, this](const std::string &name) 
       {
-        sys::path p = relativePath(sys::path(name), _root);
-        out_file << map_files[name] << " *" << _root.filename() + "/" + p.file_string() << std::endl;
+        const file &f = map_files[name];
+
+        sys::path p = relativePath(sys::path(name), sys::path(f.root));
+        out_file << f.md5 << " *" << sys::path(f.root).filename() + "/" + p.file_string() << std::endl;
       });
 
 
@@ -118,6 +133,7 @@ public:
   void set_root(const std::string &root)
   {
     this->root = root;
+    _directories.push_back(sys::path(root).filename());
   }
 
   void do_directory(const sys::path &path)
@@ -134,7 +150,8 @@ public:
     std::string name(path.leaf());
     std::string full_path(path.file_string());
 
-    _files[full_path] = md5;
+    file f(root, md5);
+    _files[full_path] = f;
   }
 
   const po::options_description& options()
