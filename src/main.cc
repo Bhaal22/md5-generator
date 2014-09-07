@@ -7,23 +7,6 @@
 
 namespace po = boost::program_options;
 
-class MyCLass {
-  int *pInt;
-public:
-  MyCLass() {
-    pInt = new int;
-    *pInt = 42;
-  }
-  ~MyCLass() {
-    delete pInt;
-    printf("Goodbye cruel world!");
-  }
-  void func1() {
-    printf("Hello World %d", *pInt);
-  }
-};
-
-
 int main(int argc, char **argv)
 {
   po::options_description description("Hash Generator usage");
@@ -64,6 +47,22 @@ int main(int argc, char **argv)
       return 0;
   }
 
+  std::string pattern;
+  if (vm.count("file_pattern"))
+  {
+    pattern = vm["file_pattern"].as<std::string>();
+
+    try
+    {
+      std::tr1::regex rx(pattern);
+    }
+    catch (std::regex_error ex)
+    {
+      std::cout << "pattern invalid" << std::endl;
+      return 0;
+    }
+  }
+
 
   std::string generator;
   if (vm.count("generator"))
@@ -72,12 +71,12 @@ int main(int argc, char **argv)
 
     if (generator == "file")
     {
-      FileSystemCrawler<FileAction> crawler(argc, argv);
+      FileSystemCrawler<FileAction> crawler(argc, argv, pattern);
       crawler.crawl(dirs);
     }
     else if (generator == "trace")
     {
-      FileSystemCrawler<TraceAction> crawler(argc, argv);
+      FileSystemCrawler<TraceAction> crawler(argc, argv, pattern);
       crawler.crawl(dirs);
     }
   }
