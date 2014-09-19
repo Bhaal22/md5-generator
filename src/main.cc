@@ -63,6 +63,24 @@ int main(int argc, char **argv)
     }
   }
 
+  std::string help_generator;
+  if (vm.count("help-generator"))
+  {
+    help_generator = vm["help-generator"].as<std::string>();
+
+    if (help_generator == "file")
+    {
+      FileAction action(argc, argv);
+      std::cout << action << std::endl;
+      
+    }
+    else if (help_generator == "trace")
+    {
+      TraceAction action(argc, argv);
+      std::cout << action << std::endl;
+    }
+  }
+
 
   std::string generator;
   if (vm.count("generator"))

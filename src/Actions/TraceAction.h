@@ -45,6 +45,12 @@ public:
   {
     return parameters;
   }
+
+  friend std::ostream &operator<< (std::ostream &os, const TraceAction &action)
+  {
+    os << action.parameters;
+    return os;
+  }
 };
 
 #endif
