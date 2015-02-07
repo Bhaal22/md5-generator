@@ -78,7 +78,8 @@ public:
   {
     parameters.add_options()
       ("help", "Help")
-      ("output_file,o", po::value<std::string>(), "Output File");
+      ("output_file,o", po::value<std::string>(), "Output File")
+	  ("split_output,s", po::value<std::string>(), "Split output file");
 
     po::variables_map vm;
     po::parsed_options parsed =
