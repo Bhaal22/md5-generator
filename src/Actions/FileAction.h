@@ -72,14 +72,19 @@ private:
     return result;
   }
 
+private:
+  bool _splitOutputFiles;
+
 public:
   FileAction(int argc, char **argv)
-    : parameters("File Generator")
+    : parameters("File Generator"),
+    output_file(),
+    _splitOutputFiles(false)
   {
     parameters.add_options()
       ("help", "Help")
       ("output_file,o", po::value<std::string>(), "Output File")
-	  ("split_output,s", po::value<std::string>(), "Split output file");
+      ("split_output,s", po::value<std::string>(), "Split output file");
 
     po::variables_map vm;
     po::parsed_options parsed =
@@ -88,12 +93,15 @@ public:
     po::store(parsed, vm);
     po::notify(vm);
 
+    if (vm.count("split_output"))
+      {
+        _splitOutputFiles = true;
+      }
 
-    if (vm.count("output_file"))
-    {
-      output_file = vm["output_file"].as<std::string>();
-    }
-
+      if (vm.count("output_file"))
+      {
+        output_file = vm["output_file"].as<std::string>();
+      }
   }
 
   ~FileAction()

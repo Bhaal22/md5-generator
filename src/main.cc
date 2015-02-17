@@ -72,12 +72,13 @@ int main(int argc, char **argv)
     {
       FileAction action(argc, argv);
       std::cout << action << std::endl;
-      
+      return 0;
     }
     else if (help_generator == "trace")
     {
       TraceAction action(argc, argv);
       std::cout << action << std::endl;
+      return 0;
     }
   }
 
