@@ -23,3 +23,8 @@
 |                  | Description                                           | Default Value       |
  ----------------- | ---------------------------------------------------   | ------------------
 | output_file      | Output File                                           |                     |
+
+
+> How to build
+
+> Boost must have been built using those flags : b2 runtime-link=static variant=debug threading=multi
