@@ -53,7 +53,10 @@ struct md5
     encoder.Put(digest, sizeof(digest));
     encoder.MessageEnd();
 
-    return output;
+    std::string lowerCaseOutput(output);
+    std::transform(output.begin(), output.end(), lowerCaseOutput.begin(), ::tolower);
+
+    return lowerCaseOutput;
   }
 };
 

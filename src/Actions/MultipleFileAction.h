@@ -57,9 +57,6 @@ private:
     return result;
   }
 
-private:
-  bool _splitOutputFiles;
-
 public:
   MultipleFileAction(int argc, char **argv)
     : parameters("Multiple File Generator")
@@ -73,47 +70,10 @@ public:
 
     po::store(parsed, vm);
     po::notify(vm);
-
-    if (vm.count("split_output"))
-    {
-      _splitOutputFiles = true;
-    }
   }
 
   ~MultipleFileAction()
-  {
-    /*std::ofstream out_file(output_file, std::ios::out);
-
-    out_file << "//----- Directories -----\\\\" << std::endl;
-    std::for_each(_directories.begin(), _directories.end(),
-      [&out_file](std::string directory) {
-
-      out_file << "// **** " << directory << " **** \\\\" << std::endl;
-    });
-
-    std::vector<std::string> keys(_files.size());
-
-    std::transform(_files.begin(), _files.end(), keys.begin(),
-      [](std::pair<std::string, file> p) {
-      return p.first;
-    });
-
-
-    std::map<std::string, file> &map_files = _files;
-    std::sort(keys.begin(), keys.end());
-
-    std::for_each(keys.begin(), keys.end(),
-      [&out_file, &map_files, this](const std::string &name)
-    {
-      const file &f = map_files[name];
-
-      sys::path p = relativePath(sys::path(name), sys::path(f.root));
-      out_file << f.md5 << " *" << sys::path(f.root).filename() + "/" + p.file_string() << std::endl;
-    });
-
-
-    out_file.close();*/
-  }
+  {}
 
   void set_root(const std::string &root)
   {
@@ -135,8 +95,15 @@ public:
     std::string name(path.leaf());
     std::string full_path(path.file_string());
 
-    file f(root, md5);
-    _files[full_path] = f;
+    std::string dir = path.parent_path();
+
+
+    std::string output = path.basename() + ".md5";
+    sys::path _full_path = sys::path(dir) / sys::path(output);
+
+
+    std::ofstream out_file(_full_path, std::ios::out);
+    out_file << md5 << std::endl;
   }
 
   const po::options_description& options()

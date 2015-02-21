@@ -62,6 +62,7 @@ int main(int argc, char **argv)
     catch (std::regex_error ex)
     {
       std::cout << "pattern invalid" << std::endl;
+      std::cout << ex.what() << std::endl;
       return 0;
     }
   }
