@@ -1,26 +1,13 @@
-#ifndef __FILE_ACTION_H
-#define __FILE_ACTION_H
+#ifndef __SINGLE_FILE_ACTION_H
+#define __SINGLE_FILE_ACTION_H
 
 #include <fstream>
 #include <map>
 
+#include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
 namespace po = boost::program_options;
-
-struct file
-{
-  std::string root;
-  std::string md5;
-
-  file()
-    : root(""), md5("")
-  { }
-
-  file(const std::string &root, const std::string &md5)
-    : root(root), md5(md5)
-  { }
-};
 
 struct SingleFileAction
 {
@@ -74,13 +61,12 @@ private:
 
 public:
   SingleFileAction(int argc, char **argv)
-    : parameters("File Generator"),
+    : parameters("Single File Generator"),
     output_file()
   {
     parameters.add_options()
       ("help", "Help")
-      ("output_file,o", po::value<std::string>(), "Output File")
-      ("split_output,s", po::value<std::string>(), "Split output file");
+      ("output_file,o", po::value<std::string>(), "Output File");
 
     po::variables_map vm;
     po::parsed_options parsed =

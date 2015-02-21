@@ -1,9 +1,11 @@
 #include <boost/program_options.hpp>
 
 #include <iostream>
+#include "file.h"
+
 #include "Actions/TraceAction.h"
-#include "Actions/SingleFileAction.h"
 #include "Actions/MultipleFileAction.h"
+#include "Actions/SingleFileAction.h"
 #include "FileSystemCrawler.h"
 
 namespace po = boost::program_options;
