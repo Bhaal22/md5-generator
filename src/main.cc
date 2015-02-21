@@ -2,7 +2,8 @@
 
 #include <iostream>
 #include "Actions/TraceAction.h"
-#include "Actions/FileAction.h"
+#include "Actions/SingleFileAction.h"
+#include "Actions/MultipleFileAction.h"
 #include "FileSystemCrawler.h"
 
 namespace po = boost::program_options;
@@ -70,7 +71,7 @@ int main(int argc, char **argv)
 
     if (help_generator == "file")
     {
-      FileAction action(argc, argv);
+      SingleFileAction action(argc, argv);
       std::cout << action << std::endl;
       return 0;
     }
@@ -90,7 +91,7 @@ int main(int argc, char **argv)
 
     if (generator == "file")
     {
-      FileSystemCrawler<FileAction> crawler(argc, argv, pattern);
+      FileSystemCrawler<SingleFileAction> crawler(argc, argv, pattern);
       crawler.crawl(dirs);
     }
     else if (generator == "trace")

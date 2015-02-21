@@ -8,21 +8,7 @@
 
 namespace po = boost::program_options;
 
-struct file
-{
-  std::string root;
-  std::string md5;
-
-  file()
-    : root(""), md5("")
-  { }
-
-  file(const std::string &root, const std::string &md5)
-    : root(root), md5(md5)
-  { }
-};
-
-struct FileAction
+struct MultipleFileAction
 {
 private:
   po::options_description parameters;
@@ -76,8 +62,8 @@ private:
   bool _splitOutputFiles;
 
 public:
-  FileAction(int argc, char **argv)
-    : parameters("File Generator"),
+  MultipleFileAction(int argc, char **argv)
+    : parameters("Multiple File Generator"),
     output_file(),
     _splitOutputFiles(false)
   {
@@ -104,7 +90,7 @@ public:
     }
   }
 
-  ~FileAction()
+  ~MultipleFileAction()
   {
     std::ofstream out_file(output_file, std::ios::out);
 
@@ -168,7 +154,7 @@ public:
     return parameters;
   }
 
-  friend std::ostream &operator<< (std::ostream &os, const FileAction &action)
+  friend std::ostream &operator<< (std::ostream &os, const MultipleFileAction &action)
   {
     os << action.parameters;
     return os;

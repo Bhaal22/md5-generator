@@ -22,7 +22,7 @@ struct file
   { }
 };
 
-struct FileAction
+struct SingleFileAction
 {
 private:
   po::options_description parameters;
@@ -76,7 +76,7 @@ private:
   bool _splitOutputFiles;
 
 public:
-  FileAction(int argc, char **argv)
+  SingleFileAction(int argc, char **argv)
     : parameters("File Generator"),
     output_file(),
     _splitOutputFiles(false)
@@ -104,7 +104,7 @@ public:
       }
   }
 
-  ~FileAction()
+  ~SingleFileAction()
   {
     std::ofstream out_file(output_file, std::ios::out);
 
@@ -168,7 +168,7 @@ public:
     return parameters;
   }
 
-  friend std::ostream &operator<< (std::ostream &os, const FileAction &action)
+  friend std::ostream &operator<< (std::ostream &os, const SingleFileAction &action)
   {
     os << action.parameters;
     return os;

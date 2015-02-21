@@ -84,10 +84,10 @@
     <ClCompile Include="main.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Actions\FileAction.h" />
+    <ClInclude Include="Actions\SingleFileAction.h" />
     <ClInclude Include="Actions\TraceAction.h" />
     <ClInclude Include="FileSystemCrawler.h" />
-    <ClInclude Include="SeparateFileAction.h" />
+    <ClInclude Include="MultipleFileAction.h" />
     <ClInclude Include="_md5.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
