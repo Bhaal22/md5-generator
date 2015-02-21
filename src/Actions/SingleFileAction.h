@@ -72,14 +72,10 @@ private:
     return result;
   }
 
-private:
-  bool _splitOutputFiles;
-
 public:
   SingleFileAction(int argc, char **argv)
     : parameters("File Generator"),
-    output_file(),
-    _splitOutputFiles(false)
+    output_file()
   {
     parameters.add_options()
       ("help", "Help")
@@ -93,15 +89,10 @@ public:
     po::store(parsed, vm);
     po::notify(vm);
 
-    if (vm.count("split_output"))
-      {
-        _splitOutputFiles = true;
-      }
-
-      if (vm.count("output_file"))
-      {
-        output_file = vm["output_file"].as<std::string>();
-      }
+    if (vm.count("output_file"))
+    {
+      output_file = vm["output_file"].as<std::string>();
+    }
   }
 
   ~SingleFileAction()

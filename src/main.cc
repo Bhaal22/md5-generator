@@ -13,10 +13,10 @@ int main(int argc, char **argv)
   po::options_description description("Hash Generator usage");
   description.add_options()
     ("help", "show help")
-    ("help-generator,h", po::value<std::string>(), "Help for generators. Possible values = [file, trace]")
+    ("help-generator,h", po::value<std::string>(), "Help for generators. Possible values = [singlefile, multiplefile, trace]")
     ("dir,d", po::value< std::vector<std::string>>(), "directories to compute hash")
     ("file_pattern,p", po::value<std::string>()->default_value(".*"), "Pattern on which performing checksum")
-    ("generator,g", po::value<std::string>(), "name of the generator. Posible values = [file, trace]")
+    ("generator,g", po::value<std::string>(), "name of the generator. Posible values = [singlefile, multiplefile, trace]")
     ("level", po::value<int>(), "Recursive level");
 
   po::variables_map vm;
@@ -69,9 +69,15 @@ int main(int argc, char **argv)
   {
     help_generator = vm["help-generator"].as<std::string>();
 
-    if (help_generator == "file")
+    if (help_generator == "singlefile")
     {
       SingleFileAction action(argc, argv);
+      std::cout << action << std::endl;
+      return 0;
+    }
+    else if (help_generator == "multiplefile")
+    {
+      MultipleFileAction action(argc, argv);
       std::cout << action << std::endl;
       return 0;
     }
@@ -89,9 +95,14 @@ int main(int argc, char **argv)
   {
     generator = vm["generator"].as<std::string>();
 
-    if (generator == "file")
+    if (generator == "singlefile")
     {
       FileSystemCrawler<SingleFileAction> crawler(argc, argv, pattern);
+      crawler.crawl(dirs);
+    }
+    else if (generator == "multiplefile")
+    {
+      FileSystemCrawler<MultipleFileAction> crawler(argc, argv, pattern);
       crawler.crawl(dirs);
     }
     else if (generator == "trace")

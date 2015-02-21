@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FE2B3262-18EF-42A5-AF6E-3501DED5CA52}</ProjectGuid>
     <RootNamespace>check_integrity</RootNamespace>
+    <ProjectName>hash-generator</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
