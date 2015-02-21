@@ -4,23 +4,10 @@
 #include <fstream>
 #include <map>
 
+#include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
 namespace po = boost::program_options;
-
-struct file
-{
-  std::string root;
-  std::string md5;
-
-  file()
-    : root(""), md5("")
-  { }
-
-  file(const std::string &root, const std::string &md5)
-    : root(root), md5(md5)
-  { }
-};
 
 struct MultipleFileAction
 {
@@ -30,8 +17,6 @@ private:
   std::vector<std::string> _directories;
 
   std::string root;
-  std::string output_file;
-
 
   sys::path relativePath(const sys::path &path, const sys::path &relative_to)
   {
@@ -77,14 +62,10 @@ private:
 
 public:
   MultipleFileAction(int argc, char **argv)
-    : parameters("Multiple File Generator"),
-    output_file(),
-    _splitOutputFiles(false)
+    : parameters("Multiple File Generator")
   {
     parameters.add_options()
-      ("help", "Help")
-      ("output_file,o", po::value<std::string>(), "Output File")
-      ("split_output,s", po::value<std::string>(), "Split output file");
+    ("help", "Help");
 
     po::variables_map vm;
     po::parsed_options parsed =
@@ -97,16 +78,11 @@ public:
     {
       _splitOutputFiles = true;
     }
-
-    if (vm.count("output_file"))
-    {
-      output_file = vm["output_file"].as<std::string>();
-    }
   }
 
   ~MultipleFileAction()
   {
-    std::ofstream out_file(output_file, std::ios::out);
+    /*std::ofstream out_file(output_file, std::ios::out);
 
     out_file << "//----- Directories -----\\\\" << std::endl;
     std::for_each(_directories.begin(), _directories.end(),
@@ -136,7 +112,7 @@ public:
     });
 
 
-    out_file.close();
+    out_file.close();*/
   }
 
   void set_root(const std::string &root)
